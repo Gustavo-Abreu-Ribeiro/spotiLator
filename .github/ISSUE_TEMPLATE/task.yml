@@ -1,0 +1,23 @@
+name: Task
+description: Trabalho tecnico ou documental pequeno.
+title: "task: "
+labels: ["type:task"]
+body:
+  - type: textarea
+    id: task
+    attributes:
+      label: Tarefa
+    validations:
+      required: true
+  - type: textarea
+    id: files
+    attributes:
+      label: Arquivos provaveis
+    validations:
+      required: true
+  - type: textarea
+    id: proof
+    attributes:
+      label: Prova esperada
+    validations:
+      required: true

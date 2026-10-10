@@ -1,0 +1,33 @@
+name: Feature
+description: Nova capacidade dentro do escopo.
+title: "feat: "
+labels: ["type:feature"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema
+      description: Qual necessidade do catalogo romantico isto resolve?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Escopo
+      description: O que entra e o que fica fora?
+    validations:
+      required: true
+  - type: textarea
+    id: architecture
+    attributes:
+      label: Contrato/arquitetura
+      description: Store, Query, Service, docs e harness afetados.
+    validations:
+      required: true
+  - type: textarea
+    id: proof
+    attributes:
+      label: Prova esperada
+      description: Como saberemos que terminou?
+    validations:
+      required: true

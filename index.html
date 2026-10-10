@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>spotiLator</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">playlist romantica</p>
+          <h1>spotiLator</h1>
+        </div>
+        <div class="toolbar">
+          <button id="exportButton" type="button" title="Exportar JSON">Exportar</button>
+          <label class="file-button" title="Importar JSON">
+            Importar
+            <input id="importFile" type="file" accept="application/json" />
+          </label>
+        </div>
+      </header>
+
+      <section class="source-panel" aria-label="Fonte da playlist">
+        <label>
+          Playlist Spotify
+          <input id="playlistUrl" type="url" placeholder="https://open.spotify.com/playlist/..." />
+        </label>
+        <button id="savePlaylistButton" type="button">Salvar fonte</button>
+      </section>
+
+      <section class="composer" aria-label="Adicionar musica">
+        <form id="songForm">
+          <label>
+            Titulo
+            <input name="title" required placeholder="Ex.: La vie en rose" />
+          </label>
+          <label>
+            Artista
+            <input name="artist" required placeholder="Ex.: Edith Piaf" />
+          </label>
+          <label>
+            Idioma
+            <select name="language"></select>
+          </label>
+          <label>
+            Clima
+            <select name="mood"></select>
+          </label>
+          <label>
+            Link da letra
+            <input name="lyricsUrl" type="url" placeholder="https://..." />
+          </label>
+          <label>
+            Link da traducao
+            <input name="translationUrl" type="url" placeholder="https://..." />
+          </label>
+          <label class="wide">
+            Por que e romantica?
+            <textarea name="romanticReason" rows="3" placeholder="Uma nota curta, original e revisada."></textarea>
+          </label>
+          <button type="submit">Adicionar</button>
+        </form>
+      </section>
+
+      <section class="bulk-panel" aria-label="Adicionar varias musicas">
+        <label>
+          Colar lista rapida
+          <textarea id="bulkInput" rows="4" placeholder="Artista - Titulo&#10;Titulo, Artista, Idioma"></textarea>
+        </label>
+        <button id="bulkAddButton" type="button">Adicionar lista</button>
+      </section>
+
+      <section class="filters" aria-label="Filtros">
+        <input id="searchInput" type="search" placeholder="Buscar musica ou artista" />
+        <select id="languageFilter"></select>
+        <select id="moodFilter"></select>
+        <select id="statusFilter"></select>
+      </section>
+
+      <section class="summary" aria-label="Resumo do catalogo">
+        <div><strong id="totalCount">0</strong><span>musicas</span></div>
+        <div><strong id="readyCount">0</strong><span>prontas</span></div>
+        <div><strong id="needsReviewCount">0</strong><span>a revisar</span></div>
+      </section>
+
+      <section id="songList" class="song-list" aria-live="polite"></section>
+    </main>
+
+    <template id="songCardTemplate">
+      <article class="song-card">
+        <div class="song-main">
+          <div>
+            <h2></h2>
+            <p class="artist"></p>
+          </div>
+          <select class="status-select" aria-label="Status editorial"></select>
+        </div>
+        <div class="meta-row"></div>
+        <label>
+          Link da letra
+          <input class="lyrics-url" type="url" placeholder="https://..." />
+        </label>
+        <label>
+          Link da traducao
+          <input class="translation-url" type="url" placeholder="https://..." />
+        </label>
+        <label>
+          Motivo romantico
+          <textarea class="reason" rows="3"></textarea>
+        </label>
+        <div class="card-actions">
+          <a class="lyrics-link" target="_blank" rel="noreferrer">Letra</a>
+          <a class="translation-link" target="_blank" rel="noreferrer">Traducao</a>
+          <button class="remove-button" type="button">Remover</button>
+        </div>
+      </article>
+    </template>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

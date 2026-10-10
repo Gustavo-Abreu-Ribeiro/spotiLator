@@ -1,0 +1,32 @@
+name: Bug
+description: Algo quebrou ou regrediu.
+title: "bug: "
+labels: ["type:bug"]
+body:
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impacto
+      description: O que falhou e para quem?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproducao minima
+      description: Passos curtos para reproduzir.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Resultado esperado
+    validations:
+      required: true
+  - type: textarea
+    id: proof
+    attributes:
+      label: Prova esperada
+      description: Teste, harness ou checklist que deve passar.
+    validations:
+      required: true
