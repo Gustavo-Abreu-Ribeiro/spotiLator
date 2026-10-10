@@ -90,6 +90,7 @@ h1 {
 }
 
 .source-panel,
+.spotify-panel,
 .composer,
 .bulk-panel,
 .filters,
@@ -108,6 +109,28 @@ h1 {
   gap: 12px;
   padding: 14px;
   align-items: end;
+}
+
+.spotify-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 12px;
+  padding: 14px;
+  align-items: end;
+}
+
+.spotify-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.status-note {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 700;
 }
 
 .composer {
@@ -223,6 +246,36 @@ textarea {
   gap: 8px;
 }
 
+.spotify-link {
+  color: var(--blue);
+  font-size: 0.86rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.spotify-link[aria-disabled="true"] {
+  display: none;
+}
+
+.candidate-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.candidate-row a,
+.candidate-row button {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-decoration: none;
+  min-height: 32px;
+}
+
 .pill {
   border-radius: 999px;
   padding: 5px 9px;
@@ -284,6 +337,7 @@ textarea {
 @media (max-width: 820px) {
   .topbar,
   .source-panel,
+  .spotify-panel,
   .bulk-panel {
     grid-template-columns: 1fr;
   }

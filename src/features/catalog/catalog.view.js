@@ -1,6 +1,8 @@
 import { LANGUAGES, MOODS, STATUSES, statusLabel } from "./catalog.model.js";
+import { buildTranslationCandidates } from "../sources/translation-sources.model.js";
+import { SPOTIFY_PLAYLIST_URL, formatDuration } from "../spotify/spotify.model.js";
 
-export function mountCatalogView({ store, query, service, root = document }) {
+export function mountCatalogView({ store, query, service, spotifyService, root = document }) {
   const filters = {
     search: "",
     language: "",
@@ -14,6 +16,12 @@ export function mountCatalogView({ store, query, service, root = document }) {
     template: root.querySelector("#songCardTemplate"),
     playlistUrl: root.querySelector("#playlistUrl"),
     savePlaylistButton: root.querySelector("#savePlaylistButton"),
+    spotifyClientId: root.querySelector("#spotifyClientId"),
+    spotifyRedirectUri: root.querySelector("#spotifyRedirectUri"),
+    spotifyLoginButton: root.querySelector("#spotifyLoginButton"),
+    spotifyCompleteButton: root.querySelector("#spotifyCompleteButton"),
+    spotifyImportButton: root.querySelector("#spotifyImportButton"),
+    spotifyStatus: root.querySelector("#spotifyStatus"),
     bulkInput: root.querySelector("#bulkInput"),
     bulkAddButton: root.querySelector("#bulkAddButton"),
     exportButton: root.querySelector("#exportButton"),
@@ -32,6 +40,9 @@ export function mountCatalogView({ store, query, service, root = document }) {
   fillSelect(elements.languageFilter, ["", ...LANGUAGES], "Todos idiomas");
   fillSelect(elements.moodFilter, ["", ...MOODS], "Todos climas");
   fillStatusSelect(elements.statusFilter, true);
+  elements.spotifyRedirectUri.value = `${location.origin}${location.pathname}`;
+  elements.playlistUrl.value = query.selectPlaylistMeta().playlistUrl || SPOTIFY_PLAYLIST_URL;
+  hydrateSpotifyConfig();
 
   elements.form.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -42,6 +53,39 @@ export function mountCatalogView({ store, query, service, root = document }) {
 
   elements.savePlaylistButton.addEventListener("click", () => {
     service.setPlaylistUrl(elements.playlistUrl.value);
+    spotifyService.saveConfig({ playlistUrl: elements.playlistUrl.value });
+  });
+
+  elements.spotifyLoginButton.addEventListener("click", async () => {
+    try {
+      setSpotifyStatus("Redirecionando para o Spotify...");
+      await spotifyService.startLogin({
+        clientId: elements.spotifyClientId.value.trim(),
+        playlistUrl: elements.playlistUrl.value.trim()
+      });
+    } catch (error) {
+      setSpotifyStatus(error.message);
+    }
+  });
+
+  elements.spotifyCompleteButton.addEventListener("click", async () => {
+    try {
+      const token = await spotifyService.completeLoginFromUrl();
+      setSpotifyStatus(token ? "Login Spotify concluido." : "Nenhum login pendente na URL.");
+    } catch (error) {
+      setSpotifyStatus(error.message);
+    }
+  });
+
+  elements.spotifyImportButton.addEventListener("click", async () => {
+    try {
+      setSpotifyStatus("Importando faixas...");
+      const songs = await spotifyService.importPlaylistTracks(elements.playlistUrl.value.trim());
+      const count = service.addSongs(songs);
+      setSpotifyStatus(`${count} musica(s) importada(s). Duplicadas foram ignoradas.`);
+    } catch (error) {
+      setSpotifyStatus(error.message);
+    }
   });
 
   elements.bulkAddButton.addEventListener("click", () => {
@@ -114,10 +158,25 @@ export function mountCatalogView({ store, query, service, root = document }) {
       service.updateSong(song.id, { romanticReason: value })
     );
 
+    setLink(node.querySelector(".spotify-link"), song.spotifyUrl);
+    node.querySelector(".spotify-link").textContent = spotifyLabel(song);
+    renderCandidates(node.querySelector(".candidate-row"), song, (url) => service.updateSong(song.id, { translationUrl: url }));
     setLink(node.querySelector(".lyrics-link"), song.lyricsUrl);
     setLink(node.querySelector(".translation-link"), song.translationUrl);
     node.querySelector(".remove-button").addEventListener("click", () => service.removeSong(song.id));
     return node;
+  }
+
+  function hydrateSpotifyConfig() {
+    const config = spotifyService.getConfig();
+    elements.spotifyClientId.value = config.clientId || "";
+    if (!query.selectPlaylistMeta().playlistUrl) {
+      service.setPlaylistUrl(config.playlistUrl || SPOTIFY_PLAYLIST_URL);
+    }
+  }
+
+  function setSpotifyStatus(message) {
+    elements.spotifyStatus.textContent = message;
   }
 }
 
@@ -166,6 +225,31 @@ function setLink(anchor, url) {
     return;
   }
   anchor.href = url;
+}
+
+function renderCandidates(container, song, onUseBest) {
+  container.replaceChildren();
+  const candidates = buildTranslationCandidates(song).slice(0, 4);
+  const useBest = document.createElement("button");
+  useBest.type = "button";
+  useBest.textContent = "Usar melhor busca";
+  useBest.addEventListener("click", () => onUseBest(candidates[0].url));
+  container.append(useBest);
+
+  candidates.forEach((candidate) => {
+    const anchor = document.createElement("a");
+    anchor.href = candidate.url;
+    anchor.target = "_blank";
+    anchor.rel = "noreferrer";
+    anchor.textContent = `Buscar ${candidate.providerName}`;
+    anchor.title = `Pontuacao ${candidate.score}`;
+    container.append(anchor);
+  });
+}
+
+function spotifyLabel(song) {
+  const parts = [song.album, formatDuration(song.durationMs)].filter(Boolean);
+  return parts.length ? `Spotify: ${parts.join(" · ")}` : "Abrir no Spotify";
 }
 
 function pill(text, type) {

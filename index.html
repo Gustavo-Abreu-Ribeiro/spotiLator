@@ -25,9 +25,26 @@
       <section class="source-panel" aria-label="Fonte da playlist">
         <label>
           Playlist Spotify
-          <input id="playlistUrl" type="url" placeholder="https://open.spotify.com/playlist/..." />
+          <input id="playlistUrl" type="url" value="https://open.spotify.com/playlist/0FoBQqwEzAoBWlDzcswX1A" />
         </label>
         <button id="savePlaylistButton" type="button">Salvar fonte</button>
+      </section>
+
+      <section class="spotify-panel" aria-label="Importar Spotify">
+        <label>
+          Spotify Client ID
+          <input id="spotifyClientId" type="text" autocomplete="off" placeholder="Cole o Client ID do app Spotify" />
+        </label>
+        <label>
+          Redirect URI
+          <input id="spotifyRedirectUri" type="text" readonly />
+        </label>
+        <div class="spotify-actions">
+          <button id="spotifyLoginButton" type="button">Conectar</button>
+          <button id="spotifyCompleteButton" type="button">Finalizar login</button>
+          <button id="spotifyImportButton" type="button">Importar playlist</button>
+        </div>
+        <p id="spotifyStatus" class="status-note">Importacao usa API oficial com PKCE, sem segredo no codigo.</p>
       </section>
 
       <section class="composer" aria-label="Adicionar musica">
@@ -98,6 +115,7 @@
           <select class="status-select" aria-label="Status editorial"></select>
         </div>
         <div class="meta-row"></div>
+        <a class="spotify-link" target="_blank" rel="noreferrer">Abrir no Spotify</a>
         <label>
           Link da letra
           <input class="lyrics-url" type="url" placeholder="https://..." />
@@ -110,6 +128,7 @@
           Motivo romantico
           <textarea class="reason" rows="3"></textarea>
         </label>
+        <div class="candidate-row"></div>
         <div class="card-actions">
           <a class="lyrics-link" target="_blank" rel="noreferrer">Letra</a>
           <a class="translation-link" target="_blank" rel="noreferrer">Traducao</a>

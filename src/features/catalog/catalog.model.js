@@ -45,7 +45,10 @@ export function createSong(input = {}) {
     status: STATUSES.some((status) => status.value === input.status) ? input.status : "to_review",
     lyricsUrl: clean(input.lyricsUrl),
     translationUrl: clean(input.translationUrl),
-    romanticReason: clean(input.romanticReason)
+    romanticReason: clean(input.romanticReason),
+    spotifyUrl: clean(input.spotifyUrl),
+    album: clean(input.album),
+    durationMs: Number(input.durationMs || 0)
   };
 }
 

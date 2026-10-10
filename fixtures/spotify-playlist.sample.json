@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "track": {
+        "name": "La vie en rose",
+        "artists": [{ "name": "Edith Piaf" }],
+        "album": { "name": "Chansons Parisiennes" },
+        "duration_ms": 187000,
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/example1"
+        }
+      }
+    },
+    {
+      "track": {
+        "name": "Something",
+        "artists": [{ "name": "The Beatles" }],
+        "album": { "name": "Abbey Road" },
+        "duration_ms": 182000,
+        "external_urls": {
+          "spotify": "https://open.spotify.com/track/example2"
+        }
+      }
+    }
+  ],
+  "next": null,
+  "total": 2
+}

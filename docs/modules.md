@@ -14,6 +14,19 @@ Modulo principal do MVP.
 - `catalog.service.js`: comandos, persistencia e import/export.
 - `catalog.view.js`: renderizacao e eventos da UI.
 
+## `src/features/spotify`
+
+Importacao oficial de metadados da playlist.
+
+- `spotify.model.js`: parser de playlist ID, mapper de faixa e formatacao.
+- `spotify.service.js`: OAuth PKCE, troca de token e busca paginada.
+
+## `src/features/sources`
+
+Busca assistida de traducao sem scraping.
+
+- `translation-sources.model.js`: provedores, ranking e links de busca.
+
 ## `scripts`
 
 Harness sem dependencias externas:

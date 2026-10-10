@@ -41,6 +41,14 @@ export function createCatalogService(store, storage = globalThis.localStorage) {
     return songs.length;
   }
 
+  function addSongs(inputs) {
+    const existingKeys = new Set(store.getState().songs.map(songKey));
+    const songs = inputs.map(createSong).filter((song) => song.title && song.artist && !existingKeys.has(songKey(song)));
+    store.setState((state) => ({ ...state, songs: [...songs, ...state.songs] }));
+    persist();
+    return songs.length;
+  }
+
   function updateSong(id, patch) {
     store.setState((state) => ({
       ...state,
@@ -70,5 +78,9 @@ export function createCatalogService(store, storage = globalThis.localStorage) {
     persist();
   }
 
-  return { load, persist, setPlaylistUrl, addSong, addBulk, updateSong, removeSong, exportJson, importJson };
+  return { load, persist, setPlaylistUrl, addSong, addBulk, addSongs, updateSong, removeSong, exportJson, importJson };
+}
+
+function songKey(song) {
+  return `${song.artist.toLowerCase()}::${song.title.toLowerCase()}`;
 }

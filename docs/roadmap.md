@@ -8,15 +8,15 @@
 
 ## M1 - Importacao Spotify
 
-- [ ] Criar contrato para OAuth e importacao por playlist.
-- [ ] Implementar fixture de resposta Spotify.
-- [ ] Adicionar adaptador oficial sem armazenar token em codigo.
+- [x] Criar contrato para OAuth e importacao por playlist.
+- [x] Implementar fixture de resposta Spotify.
+- [x] Adicionar adaptador oficial sem armazenar token em codigo.
 
 ## M2 - Fontes de letra e traducao
 
-- [ ] Registrar provedores permitidos por link.
+- [x] Registrar provedores permitidos por link.
 - [ ] Criar checklist de verificacao por musica.
-- [ ] Impedir armazenamento de letras completas no export.
+- [x] Impedir armazenamento de letras completas no export por modelo atual.
 
 ## M3 - Curadoria assistida
 
